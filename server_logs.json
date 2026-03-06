@@ -1,0 +1,44 @@
+[
+    {
+        "timestamp": "2026-03-06 22:38:56",
+        "event": "API_REQUEST",
+        "data": {
+            "city": "Ongole",
+            "crop": "rice"
+        }
+    },
+    {
+        "timestamp": "2026-03-06 22:39:03",
+        "event": "WEATHER_FETCHED",
+        "data": {
+            "temperature": 25.27,
+            "humidity": 82,
+            "condition": "few clouds"
+        }
+    },
+    {
+        "timestamp": "2026-03-06 22:39:05",
+        "event": "NEWS_FETCHED",
+        "data": [
+            "Farmers urged to unite against corporatisation of agriculture - The Hindu",
+            "Heavy rains flood over 7000 hectares of farmland in Prakasam - The New Indian Express",
+            "Officials Step Up Vigil To Curb Urea Misuse In Ongole - Deccan Chronicle",
+            "Tobacco Board limits crop acreage in Andhra Pradesh - The New Indian Express",
+            "Purchase of tobacco through MARKFED demanded - The Hans India"
+        ]
+    },
+    {
+        "timestamp": "2026-03-06 22:39:05",
+        "event": "COMMUNITY_ALERT",
+        "data": {
+            "alert": "Farmers in Ongole reported brown spots on leaves in rice crops. Please inspect your field."
+        }
+    },
+    {
+        "timestamp": "2026-03-06 22:39:22",
+        "event": "VOICE_GENERATED",
+        "data": {
+            "city": "Ongole"
+        }
+    }
+]
