@@ -28,7 +28,7 @@ Response (v2 — categorized):
 
 from fastapi import APIRouter, Query, HTTPException
 from typing import Optional, Literal
-from news_api import get_farmer_news
+from .news_api import get_farmer_news
 
 router = APIRouter(prefix="/news", tags=["Farmer News"])
 
