@@ -143,7 +143,9 @@ GET /news?city=Ludhiana&crop=wheat&state=Punjab&language=hi
     "wind_speed":  3.2,
     "forecast": [
       "06 Mar 23:30: Clear sky, 24.46°C",
-      "07 Mar 02:30: Clear sky, 23.1°C"
+      "07 Mar 02:30: Clear sky, 23.1°C",
+      "07 Mar 05:30: Clear sky, 22.8°C",
+      "07 Mar 08:30: Haze, 24.1°C"
     ]
   },
   "llm_summary": "Current weather in Ongole: Few clouds, 25.27°C, humidity 82%. Forecast: 06 Mar 23:30: Clear sky, 24.46°C. Latest rice news: Andhra Pradesh Farmer Revives 110 Nutrient-Rich Indigenous Rice Varieties. Government update: Andhra Pradesh Agriculture Department inks MoU with Waddle.",
@@ -189,7 +191,7 @@ Each item in a news category array has:
 | `kn` | Kannada    | `kn-IN`            |
 | `ml` | Malayalam  | `ml-IN`            |
 
-> When a non-English language is given, the API fetches news in **both English and the local language** and merges them.
+> When a non-English language is given, the API fetches news in **both English and the local language** and merges them. All 6 Indian languages (te, hi, mr, ta, kn, ml) have native-script search phrases built in.
 
 ---
 
@@ -231,7 +233,7 @@ Articles are sorted by score before being returned, so the most directly relevan
 | **Krishi Jagran** | RSS | Leading Indian agricultural news site — pest alerts, schemes, crop advice |
 | **The Hindu Agriculture** | RSS | High-quality agriculture journalism, policy news |
 | **IMD District Nowcast** | RSS | Official India Meteorological Department district-level weather alerts |
-| **OpenWeatherMap** | REST API | Live current weather + 9-hour forecast (reuses existing `weather.py` API key) |
+| **OpenWeatherMap** | REST API | Live current weather + **12-hour** forecast (4 slots × 3 hrs), reuses existing `weather.py` API key |
 
 > **No additional API keys needed** — Google News RSS, Krishi Jagran, The Hindu, and IMD feeds are free. OpenWeatherMap uses the key already present in `weather.py`.
 

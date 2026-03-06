@@ -48,10 +48,14 @@ STATIC_SOURCES = {
 CATEGORY_KEYWORDS = {
     "weather_news": [
         "rain", "rainfall", "flood", "drought", "cyclone", "monsoon",
-        "weather", "temperature", "heatwave", "cold wave", "imd", "alert",
-        "warning", "storm", "forecast", "humidity", "wind", "thunderstorm",
-        "बारिश", "बाढ़", "सूखा", "मानसून",   # Hindi
-        "వర్షం", "వరద", "వాతావరణం",           # Telugu
+        "weather", "temperature", "heatwave", "cold wave", "imd",
+        "storm", "forecast", "humidity", "thunderstorm", "weather warning",
+        "बारिश", "बाढ़", "सूखा", "मानसून", "मौसम",   # Hindi
+        "వర్షం", "వరద", "వాతావరణం", "తుఫాను",        # Telugu
+        "पाऊस", "मराठी मौसम",                         # Marathi
+        "மழை", "வெள்ளம்",                              # Tamil
+        "ಮಳೆ", "ಪ್ರವಾಹ",                               # Kannada
+        "മഴ", "വെള്ളപ്പൊക്കം",                         # Malayalam
     ],
     "market_news": [
         "mandi", "price", "msp", "market", "rate", "quintal", "apmc",
@@ -321,11 +325,18 @@ def get_farmer_news(
 
     # ── 2. Google News — Farmer's local language (if not English) ─────────────
     if language != "en":
+        # Native-script news phrase per language
+        native_news_phrase = {
+            "te": f"{crop} {state_str} కొత్త వార్తలు",     # Telugu: 'latest news'
+            "hi": f"{crop} {state_str} ताजा खबर",          # Hindi: 'fresh news'
+            "mr": f"{crop} {state_str} ताज्या बातम्या",    # Marathi: 'latest news'
+            "ta": f"{crop} {state_str} புதிய செய்திகள்",  # Tamil: 'new news'
+            "kn": f"{crop} {state_str} ಹೊಸ ಸುದ್ದಿ",       # Kannada: 'new news'
+            "ml": f"{crop} {state_str} പുതിയ വാർത്ത",     # Malayalam: 'new news'
+        }
         local_queries = [
-            f"{crop} {city}",
-            f"{crop} {state_str} కొత్త వార్తలు" if language == "te"
-            else f"{crop} {state_str} ताजा खबर" if language == "hi"
-            else f"{crop} {state_str} agriculture",
+            f"{crop} {city}",                        # universal: crop + city
+            native_news_phrase.get(language, f"{crop} {state_str} agriculture"),
         ]
         for q in local_queries:
             for art in _fetch_rss(_google_news_url(q, hl=hl, gl=gl), max_items=10):
