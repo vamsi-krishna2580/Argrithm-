@@ -1,23 +1,39 @@
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from news_scrapping import get_local_agri_news
 from community_reports import generate_community_alert
 from voice import generate_voice
 from logger import write_log
 from twilio.twiml.voice_response import VoiceResponse, Gather
 from news_scrapper_api.news_router import router as news_router   # ← Farmer News Scraper API
+from gemini_module.gemini_router import router as gemini_router   # ← Gemini Flash AI
 
-from fastapi import FastAPI
 from news_scrapper_api.news_api import get_farmer_news
 
-app = FastAPI()
+app = FastAPI(
+    title="AI Farmer Advisory",
+    description="Voice + Advisory + News + Gemini Flash AI for farmers",
+    version="2.0.0"
+)
+
+# ── CORS — allow HTML docs page to call the API from browser ──────────────────
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Register routers
+app.include_router(news_router)
+app.include_router(gemini_router)
 
 @app.get("/news")
 def news(city: str, crop: str, state: str = "India", language: str = "en"):
     return get_farmer_news(city, crop, state, language)
 
 
-# Register news scraper API
-app.include_router(news_router)
 
 
 @app.get("/farmer-advisory")

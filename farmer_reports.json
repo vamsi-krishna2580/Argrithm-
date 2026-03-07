@@ -76,5 +76,41 @@
         "issue": "brown spots on leaves",
         "location": "Ongole",
         "timestamp": "2026-03-07 00:11:56.403264"
+    },
+    {
+        "crop": "rice",
+        "issue": "brown spots on leaves",
+        "location": "Ongole",
+        "timestamp": "2026-03-07 21:19:45.665045"
+    },
+    {
+        "crop": "rice",
+        "issue": "brown spots on leaves",
+        "location": "Ongole",
+        "timestamp": "2026-03-07 21:40:54.551983"
+    },
+    {
+        "crop": "rice",
+        "issue": "brown spots on leaves",
+        "location": "Ongole",
+        "timestamp": "2026-03-07 21:47:27.689482"
+    },
+    {
+        "crop": "rice",
+        "issue": "brown spots on leaves",
+        "location": "Ongole",
+        "timestamp": "2026-03-07 21:59:06.501516"
+    },
+    {
+        "crop": "rice",
+        "issue": "brown spots on leaves",
+        "location": "Ongole",
+        "timestamp": "2026-03-07 22:12:10.767327"
+    },
+    {
+        "crop": "rice",
+        "issue": "brown spots on leaves",
+        "location": "Ongole",
+        "timestamp": "2026-03-07 22:21:15.113022"
     }
 ]

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Argrithm API Docs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #1c2128;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --green: #3fb950;
+      --blue: #58a6ff;
+      --purple: #bc8cff;
+      --orange: #ffa657;
+      --red: #f85149;
+      --teal: #39d353;
+      --pill-get: rgba(63,185,80,0.15);
+      --pill-post: rgba(88,166,255,0.15);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── Sidebar ── */
+    .layout { display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 260px; flex-shrink: 0;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 24px 0;
+      position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    }
+    .sidebar-logo {
+      padding: 0 20px 24px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+    .sidebar-logo h2 { font-size: 16px; font-weight: 700; color: var(--text); }
+    .sidebar-logo span { font-size: 12px; color: var(--muted); }
+    .sidebar-section { padding: 8px 20px; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-top: 8px; }
+    .sidebar a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 20px; font-size: 13px; color: var(--muted);
+      text-decoration: none; transition: all .15s;
+    }
+    .sidebar a:hover { background: var(--surface2); color: var(--text); }
+    .method-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; font-weight: 600;
+      border-radius: 4px; padding: 2px 6px;
+    }
+    .GET  { background: var(--pill-get);  color: var(--green); }
+    .POST { background: var(--pill-post); color: var(--blue);  }
+
+    /* ── Main ── */
+    .main { flex: 1; padding: 48px 56px; max-width: 900px; }
+    .hero { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+    .hero h1 { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
+    .hero h1 span { color: var(--green); }
+    .hero p  { font-size: 15px; color: var(--muted); line-height: 1.6; }
+    .base-url {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 16px; margin-top: 16px;
+      font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--blue);
+    }
+    .base-url span { color: var(--muted); font-family: 'Inter', sans-serif; font-size: 12px; }
+
+    /* ── Endpoint card ── */
+    .endpoint {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+    .ep-header {
+      display: flex; align-items: center; gap: 14px;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface2);
+      cursor: pointer;
+    }
+    .ep-header h3 { font-size: 14px; font-weight: 600; flex: 1; }
+    .ep-desc { color: var(--muted); font-size: 13px; }
+    .ep-body { padding: 24px; }
+
+    /* ── Params table ── */
+    .params-title { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 10px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 24px; }
+    th { text-align: left; padding: 8px 12px; background: var(--surface2); color: var(--muted); font-weight: 600; font-size: 12px; }
+    td { padding: 9px 12px; border-top: 1px solid var(--border); vertical-align: top; }
+    code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: var(--surface2); border-radius: 4px; padding: 2px 6px; }
+    .req { color: var(--red); font-size: 11px; font-weight: 600; }
+    .opt { color: var(--muted); font-size: 11px; }
+
+    /* ── Examples ── */
+    .examples-title { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 12px; }
+    .example-group { margin-bottom: 16px; }
+    .example-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+    .url-bar {
+      display: flex; align-items: center;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; overflow: hidden;
+    }
+    .url-method { padding: 10px 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; border-right: 1px solid var(--border); flex-shrink: 0; }
+    .url-method.GET  { background: var(--pill-get);  color: var(--green); }
+    .url-method.POST { background: var(--pill-post); color: var(--blue);  }
+    .url-text { flex: 1; padding: 10px 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text); overflow-x: auto; white-space: nowrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 16px; border-radius: 6px; font-size: 13px; font-weight: 600;
+      text-decoration: none; cursor: pointer; border: none; transition: opacity .15s;
+    }
+    .btn:hover { opacity: .85; }
+    .btn-open  { background: var(--green); color: #000; }
+    .btn-copy  { background: var(--surface2); border: 1px solid var(--border); color: var(--text); margin-left: 8px; }
+
+    /* ── JSON block ── */
+    .json-block {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 16px; font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; line-height: 1.7; white-space: pre-wrap; overflow-x: auto;
+      margin-top: 12px;
+    }
+    .jk { color: var(--blue); }
+    .jv { color: var(--orange); }
+    .js { color: var(--green); }
+    .jn { color: var(--purple); }
+
+    /* ── Response preview ── */
+    .response-title { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin: 20px 0 10px; }
+    .response-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(63,185,80,.12); border: 1px solid rgba(63,185,80,.3); border-radius: 6px; padding: 4px 10px; font-size: 12px; font-weight: 600; color: var(--green); margin-bottom: 8px; }
+
+    /* ── Section header ── */
+    .section-header { font-size: 20px; font-weight: 700; margin: 40px 0 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+
+    /* ── Info box ── */
+    .info-box { background: rgba(88,166,255,.08); border: 1px solid rgba(88,166,255,.3); border-radius: 8px; padding: 14px 18px; font-size: 13px; color: var(--muted); margin-bottom: 24px; line-height: 1.6; }
+    .info-box strong { color: var(--blue); }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--surface); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- ── SIDEBAR ── -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <h2>🌾 Argrithm API</h2>
+      <span>Farmer Advisory System v2.0</span>
+    </div>
+
+    <div class="sidebar-section">News Scraper</div>
+    <a href="#news-get"><span class="method-badge GET">GET</span> /news</a>
+
+    <div class="sidebar-section">Gemini Flash AI</div>
+    <a href="#gemini-advisory"><span class="method-badge POST">POST</span> /gemini/advisory</a>
+    <a href="#gemini-transcribe"><span class="method-badge POST">POST</span> /gemini/transcribe</a>
+    <a href="#gemini-fullflow"><span class="method-badge POST">POST</span> /gemini/full-flow</a>
+    <a href="#gemini-audio"><span class="method-badge GET">GET</span> /gemini/audio/{file}</a>
+
+    <div class="sidebar-section">Legacy</div>
+    <a href="#farmer-advisory"><span class="method-badge GET">GET</span> /farmer-advisory</a>
+
+    <div class="sidebar-section">Explore</div>
+    <a href="http://127.0.0.1:8000/docs" target="_blank">📖 Swagger UI ↗</a>
+    <a href="http://127.0.0.1:8000/redoc" target="_blank">📚 ReDoc ↗</a>
+  </nav>
+
+  <!-- ── MAIN ── -->
+  <main class="main">
+
+    <!-- HERO -->
+    <div class="hero">
+      <h1>🌾 <span>Argrithm</span> API Docs</h1>
+      <p>Hyperlocal agricultural news, Gemini Flash AI advisory, speech-to-text, and text-to-speech — all in one system built for Indian farmers.</p>
+      <div class="base-url"><span>Base URL</span> http://127.0.0.1:8000</div>
+    </div>
+
+    <div class="info-box">
+      <strong>Quick Start:</strong> Start the server with <code>uvicorn server:app --reload --port 8000</code>, then use the clickable examples below or open <a href="http://127.0.0.1:8000/docs" style="color:var(--blue)">Swagger UI</a>.
+    </div>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <!-- NEWS SCRAPER -->
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="section-header">📰 News Scraper API</div>
+
+    <!-- GET /news -->
+    <div class="endpoint" id="news-get">
+      <div class="ep-header">
+        <span class="method-badge GET">GET</span>
+        <h3>/news</h3>
+        <span class="ep-desc">Fetch hyperlocal, categorized agricultural news</span>
+      </div>
+      <div class="ep-body">
+        <div class="params-title">Query Parameters</div>
+        <table>
+          <tr><th>Param</th><th>Type</th><th>Required</th><th>Description</th></tr>
+          <tr><td><code>city</code></td><td>string</td><td><span class="req">Required</span></td><td>Farmer's city or village (e.g. <code>Ongole</code>)</td></tr>
+          <tr><td><code>crop</code></td><td>string</td><td><span class="req">Required</span></td><td>Crop the farmer grows (e.g. <code>rice</code>)</td></tr>
+          <tr><td><code>state</code></td><td>string</td><td><span class="opt">Optional</span></td><td>Farmer's state — improves regional accuracy</td></tr>
+          <tr><td><code>language</code></td><td>string</td><td><span class="opt">Optional</span></td><td><code>en</code> / <code>te</code> / <code>hi</code> / <code>mr</code> / <code>ta</code> / <code>kn</code> / <code>ml</code></td></tr>
+          <tr><td><code>limit</code></td><td>integer</td><td><span class="opt">Optional</span></td><td>Max articles per category (1–15, default 5)</td></tr>
+        </table>
+
+        <div class="examples-title">Clickable Examples</div>
+
+        <div class="example-group">
+          <div class="example-label">🌾 Rice farmer in Ongole, Telugu news</div>
+          <div class="url-bar">
+            <span class="url-method GET">GET</span>
+            <span class="url-text" id="url-news-1">/news?city=Ongole&amp;crop=rice&amp;state=Andhra+Pradesh&amp;language=te&amp;limit=5</span>
+          </div>
+          <div style="margin-top:8px;display:flex;gap:8px">
+            <a class="btn btn-open" href="http://127.0.0.1:8000/news?city=Ongole&crop=rice&state=Andhra+Pradesh&language=te&limit=5" target="_blank">▶ Run in Browser</a>
+            <button class="btn btn-copy" onclick="copyUrl('url-news-1')">⎘ Copy</button>
+          </div>
+        </div>
+
+        <div class="example-group">
+          <div class="example-label">🌾 Wheat farmer in Ludhiana, Hindi news</div>
+          <div class="url-bar">
+            <span class="url-method GET">GET</span>
+            <span class="url-text" id="url-news-2">/news?city=Ludhiana&amp;crop=wheat&amp;state=Punjab&amp;language=hi&amp;limit=5</span>
+          </div>
+          <div style="margin-top:8px;display:flex;gap:8px">
+            <a class="btn btn-open" href="http://127.0.0.1:8000/news?city=Ludhiana&crop=wheat&state=Punjab&language=hi&limit=5" target="_blank">▶ Run in Browser</a>
+            <button class="btn btn-copy" onclick="copyUrl('url-news-2')">⎘ Copy</button>
+          </div>
+        </div>
+
+        <div class="example-group">
+          <div class="example-label">🍇 Grapes farmer in Nashik, Marathi news</div>
+          <div class="url-bar">
+            <span class="url-method GET">GET</span>
+            <span class="url-text" id="url-news-3">/news?city=Nashik&amp;crop=grapes&amp;state=Maharashtra&amp;language=mr</span>
+          </div>
+          <div style="margin-top:8px;display:flex;gap:8px">
+            <a class="btn btn-open" href="http://127.0.0.1:8000/news?city=Nashik&crop=grapes&state=Maharashtra&language=mr" target="_blank">▶ Run in Browser</a>
+            <button class="btn btn-copy" onclick="copyUrl('url-news-3')">⎘ Copy</button>
+          </div>
+        </div>
+
+        <div class="response-title">Response Schema</div>
+        <div class="response-badge">200 OK</div>
+        <div class="json-block"><span class="jk">"query"</span>: { <span class="jk">"city"</span>: <span class="js">"Ongole"</span>, <span class="jk">"crop"</span>: <span class="js">"rice"</span>, <span class="jk">"state"</span>: <span class="js">"Andhra Pradesh"</span> },
+<span class="jk">"total_articles"</span>: <span class="jn">18</span>,
+<span class="jk">"weather"</span>: { <span class="jk">"temperature"</span>: <span class="jn">27.4</span>, <span class="jk">"humidity"</span>: <span class="jn">80</span>, <span class="jk">"condition"</span>: <span class="js">"Few clouds"</span> },
+<span class="jk">"llm_summary"</span>: <span class="js">"Current weather in Ongole: Few clouds, 27°C..."</span>,
+<span class="jk">"crop_news"</span>:    [ { <span class="jk">"title"</span>: <span class="js">"..."</span>, <span class="jk">"url"</span>: <span class="js">"..."</span>, <span class="jk">"score"</span>: <span class="jn">8</span> } ],
+<span class="jk">"weather_news"</span>: [ ... ],
+<span class="jk">"market_news"</span>:  [ ... ],
+<span class="jk">"pest_alerts"</span>:  [ ... ],
+<span class="jk">"govt_schemes"</span>: [ ... ]</div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <!-- GEMINI FLASH -->
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="section-header">🤖 Gemini Flash AI</div>
+
+    <!-- POST /gemini/advisory -->
+    <div class="endpoint" id="gemini-advisory">
+      <div class="ep-header">
+        <span class="method-badge POST">POST</span>
+        <h3>/gemini/advisory</h3>
+        <span class="ep-desc">Generate AI farming advisory from city + crop</span>
+      </div>
+      <div class="ep-body">
+        <div class="info-box" style="margin-bottom:16px">
+          <strong>Main Endpoint.</strong> Send farmer's city, crop, state, and language → receive a contextual advisory text powered by Gemini Flash, live weather data, top news, and a generated audio file.
+        </div>
+
+        <div class="params-title">Request Body (JSON)</div>
+        <table>
+          <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+          <tr><td><code>city</code></td><td>string</td><td><span class="req">Required</span></td><td>Farmer's city (e.g. <code>Ongole</code>)</td></tr>
+          <tr><td><code>crop</code></td><td>string</td><td><span class="req">Required</span></td><td>Crop name (e.g. <code>rice</code>)</td></tr>
+          <tr><td><code>state</code></td><td>string</td><td><span class="opt">Optional</span></td><td>State name (e.g. <code>Andhra Pradesh</code>)</td></tr>
+          <tr><td><code>language</code></td><td>string</td><td><span class="opt">Optional</span></td><td>Language code: <code>en</code>/<code>te</code>/<code>hi</code>/... (default: <code>en</code>)</td></tr>
+        </table>
+
+        <div class="examples-title">Clickable Examples (opens Swagger with pre-filled body)</div>
+
+        <div class="example-group">
+          <div class="example-label">🌾 Telugu rice farmer in Ongole</div>
+          <div class="url-bar">
+            <span class="url-method POST">POST</span>
+            <span class="url-text">/gemini/advisory</span>
+          </div>
+          <div class="json-block">{ <span class="jk">"city"</span>: <span class="js">"Ongole"</span>, <span class="jk">"crop"</span>: <span class="js">"rice"</span>, <span class="jk">"state"</span>: <span class="js">"Andhra Pradesh"</span>, <span class="jk">"language"</span>: <span class="js">"te"</span> }</div>
+          <div style="margin-top:10px;display:flex;gap:8px">
+            <button class="btn btn-open" onclick="tryPost('/gemini/advisory', {city:'Ongole',crop:'rice',state:'Andhra Pradesh',language:'te'})">▶ Try It</button>
+            <a class="btn btn-copy" href="http://127.0.0.1:8000/docs#/Gemini%20Flash%20AI/advisory_endpoint_gemini_advisory_post" target="_blank">📖 Open in Swagger</a>
+          </div>
+        </div>
+
+        <div class="example-group">
+          <div class="example-label">🌾 Hindi wheat farmer in Ludhiana</div>
+          <div class="json-block">{ <span class="jk">"city"</span>: <span class="js">"Ludhiana"</span>, <span class="jk">"crop"</span>: <span class="js">"wheat"</span>, <span class="jk">"state"</span>: <span class="js">"Punjab"</span>, <span class="jk">"language"</span>: <span class="js">"hi"</span> }</div>
+          <div style="margin-top:10px">
+            <button class="btn btn-open" onclick="tryPost('/gemini/advisory', {city:'Ludhiana',crop:'wheat',state:'Punjab',language:'hi'})">▶ Try It</button>
+          </div>
+        </div>
+
+        <div class="response-title">Response</div>
+        <div class="response-badge">200 OK</div>
+        <div class="json-block"><span class="jk">"city"</span>: <span class="js">"Ongole"</span>,
+<span class="jk">"crop"</span>: <span class="js">"rice"</span>,
+<span class="jk">"advisory_text"</span>: <span class="js">"Today in Ongole the weather is humid at 80%, which is ideal for rice. Latest news says..."</span>,
+<span class="jk">"audio_url"</span>: <span class="js">"/gemini/audio/advisory_output.wav"</span>,
+<span class="jk">"weather"</span>: { <span class="jk">"temperature"</span>: <span class="jn">27.4</span>, <span class="jk">"condition"</span>: <span class="js">"Few clouds"</span> },
+<span class="jk">"news_summary"</span>: <span class="js">"Current weather in Ongole: Few clouds..."</span></div>
+
+        <!-- Live Try It panel -->
+        <div id="result-advisory" style="display:none; margin-top:16px">
+          <div class="response-title">Live Response</div>
+          <div class="response-badge" id="advisory-status"></div>
+          <div class="json-block" id="advisory-result" style="max-height:300px;overflow-y:auto"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST /gemini/transcribe -->
+    <div class="endpoint" id="gemini-transcribe">
+      <div class="ep-header">
+        <span class="method-badge POST">POST</span>
+        <h3>/gemini/transcribe</h3>
+        <span class="ep-desc">Transcribe farmer audio to text (STT)</span>
+      </div>
+      <div class="ep-body">
+        <div class="params-title">Request — multipart/form-data</div>
+        <table>
+          <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+          <tr><td><code>audio</code></td><td>file</td><td><span class="req">Required</span></td><td>Audio file — WAV, MP3, OGG, WEBM</td></tr>
+        </table>
+
+        <div class="examples-title">Try It</div>
+        <a class="btn btn-open" href="http://127.0.0.1:8000/docs#/Gemini%20Flash%20AI/transcribe_endpoint_gemini_transcribe_post" target="_blank">📖 Open in Swagger (upload audio here)</a>
+
+        <div class="response-title">Response</div>
+        <div class="json-block"><span class="jk">"transcription"</span>: <span class="js">"Nenu Ongole lo vari padyam penchutunnanu"</span>,
+<span class="jk">"filename"</span>: <span class="js">"farmer_audio.wav"</span></div>
+      </div>
+    </div>
+
+    <!-- POST /gemini/full-flow -->
+    <div class="endpoint" id="gemini-fullflow">
+      <div class="ep-header">
+        <span class="method-badge POST">POST</span>
+        <h3>/gemini/full-flow</h3>
+        <span class="ep-desc">Complete pipeline: audio in → AI advisory audio out</span>
+      </div>
+      <div class="ep-body">
+        <div class="info-box" style="margin-bottom:16px">
+          <strong>One-stop endpoint.</strong> Upload farmer audio → auto STT → extract city/crop → fetch live weather + news → Gemini advisory → TTS spoken audio.
+        </div>
+
+        <div class="params-title">Request — multipart/form-data + Query Params</div>
+        <table>
+          <tr><th>Param</th><th>Type</th><th>Required</th><th>Description</th></tr>
+          <tr><td><code>audio</code></td><td>file (form)</td><td><span class="req">Required</span></td><td>Farmer's audio clip</td></tr>
+          <tr><td><code>language</code></td><td>string (query)</td><td><span class="opt">Optional</span></td><td>Language code (default <code>en</code>)</td></tr>
+          <tr><td><code>city</code></td><td>string (query)</td><td><span class="opt">Optional</span></td><td>Override — skip STT extraction</td></tr>
+          <tr><td><code>crop</code></td><td>string (query)</td><td><span class="opt">Optional</span></td><td>Override — skip STT extraction</td></tr>
+          <tr><td><code>state</code></td><td>string (query)</td><td><span class="opt">Optional</span></td><td>Farmer's state</td></tr>
+        </table>
+
+        <div class="examples-title">Flow Diagram</div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);line-height:2">
+          🎙️ Audio Upload<br>
+          &nbsp;&nbsp;&nbsp;↓ Gemini STT<br>
+          📝 Transcription → city, crop detected<br>
+          &nbsp;&nbsp;&nbsp;↓<br>
+          🌤️ Weather API + 📰 News Scraper<br>
+          &nbsp;&nbsp;&nbsp;↓ Gemini LLM<br>
+          📋 Advisory Text<br>
+          &nbsp;&nbsp;&nbsp;↓ Gemini TTS<br>
+          🔊 Advisory Audio (.wav)
+        </div>
+
+        <div style="margin-top:16px">
+          <a class="btn btn-open" href="http://127.0.0.1:8000/docs#/Gemini%20Flash%20AI/full_flow_endpoint_gemini_full_flow_post" target="_blank">📖 Open in Swagger</a>
+        </div>
+
+        <div class="response-title">Response</div>
+        <div class="json-block"><span class="jk">"transcription"</span>: <span class="js">"I grow rice in Ongole Andhra Pradesh"</span>,
+<span class="jk">"city"</span>: <span class="js">"Ongole"</span>,  <span class="jk">"crop"</span>: <span class="js">"rice"</span>,  <span class="jk">"state"</span>: <span class="js">"Andhra Pradesh"</span>,
+<span class="jk">"advisory_text"</span>: <span class="js">"Today it is cloudy in Ongole at 27°C..."</span>,
+<span class="jk">"audio_url"</span>: <span class="js">"/gemini/audio/advisory_output.wav"</span>,
+<span class="jk">"weather"</span>: { ... },
+<span class="jk">"news_summary"</span>: <span class="js">"..."</span></div>
+      </div>
+    </div>
+
+    <!-- GET /gemini/audio -->
+    <div class="endpoint" id="gemini-audio">
+      <div class="ep-header">
+        <span class="method-badge GET">GET</span>
+        <h3>/gemini/audio/{filename}</h3>
+        <span class="ep-desc">Download generated advisory audio file</span>
+      </div>
+      <div class="ep-body">
+        <div class="examples-title">Example</div>
+        <div class="url-bar">
+          <span class="url-method GET">GET</span>
+          <span class="url-text">/gemini/audio/advisory_output.wav</span>
+        </div>
+        <div style="margin-top:8px">
+          <a class="btn btn-open" href="http://127.0.0.1:8000/gemini/audio/advisory_output.wav" target="_blank">▶ Download Audio</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <!-- LEGACY -->
+    <!-- ══════════════════════════════════════════════ -->
+    <div class="section-header">🗂️ Legacy Endpoints</div>
+
+    <div class="endpoint" id="farmer-advisory">
+      <div class="ep-header">
+        <span class="method-badge GET">GET</span>
+        <h3>/farmer-advisory</h3>
+        <span class="ep-desc">Original simple advisory (weather + news + voice via gTTS)</span>
+      </div>
+      <div class="ep-body">
+        <div class="example-group">
+          <div class="url-bar">
+            <span class="url-method GET">GET</span>
+            <span class="url-text" id="url-legacy">/farmer-advisory?city=Ongole&amp;crop=rice</span>
+          </div>
+          <div style="margin-top:8px;display:flex;gap:8px">
+            <a class="btn btn-open" href="http://127.0.0.1:8000/farmer-advisory?city=Ongole&crop=rice" target="_blank">▶ Run in Browser</a>
+            <button class="btn btn-copy" onclick="copyUrl('url-legacy')">⎘ Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p style="color:var(--muted);font-size:12px;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)">
+      Argrithm Farmer Advisory System · Hackathon 2026 · Server: <a href="http://127.0.0.1:8000/docs" style="color:var(--blue)" target="_blank">http://127.0.0.1:8000/docs</a>
+    </p>
+  </main>
+</div>
+
+<script>
+  function copyUrl(id) {
+    const text = document.getElementById(id).textContent;
+    navigator.clipboard.writeText('http://127.0.0.1:8000' + text);
+    event.target.textContent = 'Copied!';
+    setTimeout(() => event.target.textContent = '⎘ Copy', 1500);
+  }
+
+  async function tryPost(path, body) {
+    const resultDiv  = document.getElementById('result-advisory');
+    const statusEl   = document.getElementById('advisory-status');
+    const resultEl   = document.getElementById('advisory-result');
+    resultDiv.style.display = 'block';
+    statusEl.textContent = 'Sending...';
+    statusEl.style.background = 'rgba(255,166,87,.12)';
+    statusEl.style.border     = '1px solid rgba(255,166,87,.3)';
+    statusEl.style.color      = '#ffa657';
+    resultEl.textContent = '';
+    try {
+      const r = await fetch('http://127.0.0.1:8000' + path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const data = await r.json();
+      statusEl.textContent = r.ok ? '200 OK' : r.status + ' Error';
+      statusEl.style.background = r.ok ? 'rgba(63,185,80,.12)' : 'rgba(248,81,73,.12)';
+      statusEl.style.border     = r.ok ? '1px solid rgba(63,185,80,.3)' : '1px solid rgba(248,81,73,.3)';
+      statusEl.style.color      = r.ok ? '#3fb950' : '#f85149';
+      resultEl.textContent = JSON.stringify(data, null, 2);
+    } catch(e) {
+      statusEl.textContent = 'Connection refused — is the server running?';
+      statusEl.style.color = '#f85149';
+      resultEl.textContent = e.message;
+    }
+  }
+</script>
+</body>
+</html>

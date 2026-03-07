@@ -42,18 +42,18 @@ LANGUAGE_NAMES = {
 @router.get("/", summary="Get hyperlocal, categorized agri-news for a farmer")
 def fetch_news(
     city: str = Query(
-        ..., description="Farmer's city or village name", example="Ongole"
+        ..., description="Farmer's city or village name", examples=["Ongole", "Nashik"]
     ),
     crop: str = Query(
-        ..., description="Crop the farmer is growing", example="rice"
+        ..., description="Crop the farmer is growing", examples=["rice", "wheat", "cotton"]
     ),
     state: Optional[str] = Query(
-        None, description="Farmer's state for regional news", example="Andhra Pradesh"
+        None, description="Farmer's state for regional news", examples=["Andhra Pradesh", "Punjab"]
     ),
     language: str = Query(
         "en",
         description="Farmer's language code: en / te / hi / mr / ta / kn / ml",
-        example="te",
+        examples=["te", "hi", "en"],
     ),
     limit: int = Query(
         5, ge=1, le=15,
